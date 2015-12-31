@@ -1,0 +1,19 @@
+from numpy import loadtxt, where  
+import re 
+  
+#load the dataset  
+a=open("C:\\Users\\Josh\\Downloads\\customer.sql","r"); b=a.read(); rows=b.split('\n')
+#a=open("C:\\Users\\Josh\\Downloads\\customer.sql","r"); b=a.read(); rows=b.split('\n');print(rows)
+#data = loadtxt('c:/temp/kmeansdata.txt', dtype='str')  #C:\\Users\\Josh\\Downloads\\customer.sql
+  
+p=set([])
+C=0
+for x in rows:
+ match = re.findall(r'[\w\.-]+\.[\w\.-]+', x)
+ for y in match:
+   if "PROD_" in y  : #print (y)
+     p.add(y)
+ C=1
+ #p.add(match)
+ #print(match)
+print (p)

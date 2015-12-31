@@ -1,0 +1,12 @@
+def reg(GPA,IQ,Gender):
+ b=[50,20,0.07,35,0.01,-10]
+
+ a=b[0]+GPA*b[1]+IQ*b[2]+Gender*b[3]+GPA*IQ*b[4]+GPA*Gender*b[5]
+
+
+ print (a)
+ return a
+
+
+if __name__ == '__main__':  
+ reg(5,3,1)

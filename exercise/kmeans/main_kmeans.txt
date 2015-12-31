@@ -1,0 +1,118 @@
+import numpy as np
+import time
+from scipy.sparse import csr_matrix  
+#from tkinter.filedialog import askopenfilename
+
+  
+def Euclidian(datasetvec1,datasetvec2):
+    return sqrt(sum(power(datasetvec1-datasetvec2,2)))
+	
+def Initcentroid(dataset,k):
+    samplesize,dim=dataset.shape()
+    centroids=zeros(samplesize,dim)
+    for i in range(k):
+	index=int(random.uniform(samplesize))
+	centroids[i,:d]=dataset[index,:]
+    return centroids
+
+
+
+
+
+
+
+def kmeans(dataset,k):
+
+ samplesize=dataset.shape[0]
+ clusterupdated=True
+ clusterresult=mat(zeros(samplesize,2))
+ 
+ centroids=Initcentroid(dataset,k)
+ 
+ while clusterupdated==True:
+  clusterupdated==False
+  for nodes in range(samplesize):
+   tempDistance=Euclidian(dataset[nodes],centroids[0])
+   clusterresult[nodes]=0,tempDistance
+   for i in range(k):
+    
+    distance=Euclidian(dataset[nodes],centroids[i])
+    if distance<tempDistance:
+	clusterresult[nodes]=i,distance#WRONG clusterresult[nodes,1]=i
+        tempDistance=Euclidian(dataset[nodes],centroids[i])
+	clusterupdated=True
+  for i in range(k):
+   centroids[i]=mean(dataset[clusterresult[:,0]==i])
+  return centroids,clusterresult
+
+def runkmeans():
+ filename = askopenfilename()
+ a=open(filename ,"r"); b=a.read(); rows=b.split('\n');print(rows)
+
+def kNN_Sparse(local_data_csr, query_data_csr, top_k):  
+    # calculate the square sum of each vector  
+    local_data_sq = local_data_csr.multiply(local_data_csr).sum(1)  
+    query_data_sq = query_data_csr.multiply(query_data_csr).sum(1)  
+      
+    # calculate the dot  
+    distance = query_data_csr.dot(local_data_csr.transpose()).todense()  
+      
+    # calculate the distance  
+    num_query, num_local = distance.shape  
+    distance = np.tile(query_data_sq, (1, num_local)) + np.tile(local_data_sq.T, (num_query, 1)) - 2 * distance  
+      
+    # get the top k  
+    topK_idx = np.argsort(distance)[:, 0:top_k]  
+    topK_similarity = np.zeros((num_query, top_k), np.float32)  
+    for i in xrange(num_query):  
+        topK_similarity[i] = distance[i, topK_idx[i]]  
+      
+    return topK_similarity, topK_idx  
+  
+  
+def run_knn():  
+    top_k = np.array(2, dtype=np.int32)  
+    local_data_offset = np.array([0, 1, 2, 4, 6], dtype=np.int64)  
+    local_data_index = np.array([0, 1, 0, 1, 0, 2], dtype=np.int32)  
+    local_data_value = np.array([1, 2, 3, 4, 8, 9], dtype=np.float32)  
+    local_data_csr = csr_matrix((local_data_value, local_data_index, local_data_offset), dtype = np.float32)  
+    #print local_data_csr.todense()  
+    #print  "END"
+      
+    query_offset = np.array([0, 1, 4], dtype=np.int64)  
+    query_index = np.array([0, 0, 1, 2], dtype=np.int32)  
+    query_value = np.array([1.1, 3.1, 4, 0.1], dtype=np.float32)  
+    query_csr = csr_matrix((query_value, query_index, query_offset), dtype = np.float32)  
+    print query_csr.todense()
+    print "OK"
+  
+    topK_similarity, topK_idx = kNN_Sparse(local_data_csr, query_csr, top_k)  
+      
+    for i in range(query_offset.shape[0]-1):  
+        print "for %d image, top %d is " % (i, top_k) , topK_idx[i]  
+        print "corresponding similarity: ", topK_similarity[i]  
+
+def initCentroids(dataSet, k):  
+    numSamples, dim = dataSet.shape  
+    centroids = zeros((k, dim))  
+    for i in range(k):  
+        index = int(random.uniform(0, numSamples))  
+        centroids[i, :] = dataSet[index, :]
+	print centroids[i, :]
+        print "OK"  
+    return centroids  
+  
+if __name__ == '__main__':  
+    #run_knn()
+     matrix = [[i]*5 for i in range(5)]
+     #matrix = mat(zeros(3,2))
+     print np.zeros(3,2)
+     #initCentroids(matrix,2)
+     a=open("c:/temp/kmeansdata.txt","r"); b=a.read(); rows=b.split('\n');print(rows)
+     #print matrix
+     #kmeans(mat(b),3)
+
+     myList = []
+     for i in range (25):
+        myList.append(i)
+     print myList
